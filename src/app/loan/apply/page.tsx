@@ -30,6 +30,8 @@ import {
   Select,
   SimpleGrid,
   useColorModeValue,
+  Progress,
+  Text,
 } from '@chakra-ui/react';
 // Custom components
 // import MiniCalendar from 'components/calendar/MiniCalendar';
@@ -40,6 +42,7 @@ import {
   MdAttachMoney,
   MdBarChart,
   MdFileCopy,
+  MdPhone,
 } from 'react-icons/md';
 import CheckTable from 'views/admin/default/components/CheckTable';
 import ComplexTable from 'views/admin/default/components/ComplexTable';
@@ -50,8 +53,12 @@ import TotalSpent from 'views/admin/default/components/TotalSpent';
 import WeeklyRevenue from 'views/admin/default/components/WeeklyRevenue';
 import tableDataCheck from 'views/admin/default/variables/tableDataCheck';
 import tableDataComplex from 'views/admin/default/variables/tableDataComplex';
+
+import Card from 'components/card/Card';
+import InputField from 'components/fields/InputField';
+
 // Assets
-import Usa from 'img/dashboards/usa.png';
+import { useState } from 'react';
 
 export default function Default() {
   // Chakra Color Mode
@@ -59,112 +66,82 @@ export default function Default() {
   const brandColor = useColorModeValue('brand.500', 'white');
   const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
 
+  const [step, setProgress] = useState(4);
+  const maxStep = 100;
+
+  const [application, setApplication] = useState<any>({
+    name: '',
+    phone: '',
+    pan: '',
+    aadhar: '',
+  });
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+      <Box textAlign="center" mb="20px">
+        <Flex alignItems="center" mb="20px">
+          <Text fontSize="2xl" fontWeight="bold">
+            Progress
+          </Text>
+          <Progress
+            variant="table"
+            colorScheme="brandScheme"
+            h="20px"
+            w="full"
+            flexGrow={1}
+            ml={2}
+            value={(step * 100.0) / maxStep}
+          />
+        </Flex>
+      </Box>
       <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 3, '2xl': 6 }}
+        columns={{ base: 1, md: 2, lg: 3, '2xl': 4 }}
         gap="20px"
         mb="20px"
       >
         <MiniStatistics
-          startContent={
-            <IconBox
-              w="56px"
-              h="56px"
-              bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-              }
-            />
-          }
-          name="Earnings"
-          value="$350.4"
+          name="Applicant Name"
+          value={application.name || 'Not Entered'}
         />
         <MiniStatistics
-          startContent={
-            <IconBox
-              w="56px"
-              h="56px"
-              bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdAttachMoney} color={brandColor} />
-              }
-            />
-          }
-          name="Spend this month"
-          value="$642.39"
-        />
-        <MiniStatistics growth="+23%" name="Sales" value="$574.34" />
-        <MiniStatistics
-          endContent={
-            <Flex me="-16px" mt="10px">
-              <FormLabel htmlFor="balance">
-                <Box boxSize={'12'}>
-                  <Image alt="" src={Usa.src} w={'100%'} h={'100%'} />
-                </Box>
-              </FormLabel>
-              <Select
-                id="balance"
-                variant="mini"
-                mt="5px"
-                me="0px"
-                defaultValue="usd"
-              >
-                <option value="usd">USD</option>
-                <option value="eur">EUR</option>
-                <option value="gba">GBA</option>
-              </Select>
-            </Flex>
-          }
-          name="Your balance"
-          value="$1,000"
+          name="Applicant Phone"
+          value={application.phone || 'Not Entered'}
         />
         <MiniStatistics
-          startContent={
-            <IconBox
-              w="56px"
-              h="56px"
-              bg="linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)"
-              icon={<Icon w="28px" h="28px" as={MdAddTask} color="white" />}
-            />
-          }
-          name="New Tasks"
-          value="154"
+          name="Applicant PAN"
+          value={application.pan || 'Not Entered'}
         />
         <MiniStatistics
-          startContent={
-            <IconBox
-              w="56px"
-              h="56px"
-              bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdFileCopy} color={brandColor} />
-              }
-            />
-          }
-          name="Total Projects"
-          value="2935"
+          name="Applicant Aadhar"
+          value={application.aadhar || 'Not Entered'}
         />
       </SimpleGrid>
 
-      <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
-        <TotalSpent />
-        <WeeklyRevenue />
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
-        <CheckTable tableData={tableDataCheck} />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px">
-          <DailyTraffic />
-          <PieCard />
+      <Card py="15px">
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: '15px', lg: '18px' }}
+          color="gray.400"
+        >
+          Step 1: Phone Verification
+        </Text>
+        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
+          <Box>
+            <InputField
+              id="phone"
+              label="Phone number"
+              extra={<Icon as={MdPhone} />}
+              placeholder="Phone number"
+              type="number"
+              mb={2}
+              onChange={(value) => {
+                setApplication({ ...application, phone: value });
+              }}
+            />
+          </Box>
         </SimpleGrid>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
-        <ComplexTable tableData={tableDataComplex} />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px">
-          <Tasks />
-          {/* <MiniCalendar h="100%" minW="100%" selectRange={false} /> */}
-        </SimpleGrid>
-      </SimpleGrid>
+      </Card>
     </Box>
   );
 }

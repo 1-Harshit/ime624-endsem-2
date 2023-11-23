@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model LoanApplication {
+  acNumber        Int       @id @default(autoincrement())
+  principalAmt    Int
+  duration        Int
+  purpose         String?   @db.Text
+}
+
+model Asset {
+  assetId           Int     @id @default(autoincrement())
+  assetType         Type
+  assetQuantifier   Int
+  description       String? @db.Text
+  valuation         Int?
+}
+
+model Aadhar {
+  aadharNumber    String    @id @db.VarChar(255)
+  name            String    @db.VarChar(255)
+  dob             DateTime  
+  sex             Gender
+  permAddress     String    @db.VarChar(255)
+}
+
+
+model Applicant {
+  phoneNumber     String        @id @db.VarChar(20)
+  applications    Application[] 
+  aadhar          Aadhar
+  income          Int
+  pan             String?       @db.VarChar(20)
+  assets          Asset[]
+  currAddress     String        @db.VarChar(255)
+  maritalStatus   Boolean
+}
+
+enum Type {
+  LAND
+  VEHICLE
+  ANIMAL
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
