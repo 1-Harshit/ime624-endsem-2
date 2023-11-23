@@ -19,7 +19,6 @@ import {
 import { Image } from 'components/image/Image';
 import { ItemContent } from 'components/menu/ItemContent';
 import { SearchBar } from 'components/navbar/searchBar/SearchBar';
-import { SidebarResponsive } from 'components/sidebar/Sidebar';
 // Assets
 import navImage from '/public/img/layout/Navbar.png';
 import { FaEthereum } from 'react-icons/fa';
@@ -99,7 +98,6 @@ export default function HeaderLinks(props: { secondary: boolean }) {
           </Text>
         </Text>
       </Flex>
-      <SidebarResponsive routes={routes} />
       <Menu>
         <MenuButton p="0px">
           <Icon
@@ -181,7 +179,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
           minW={{ base: 'unset' }}
           maxW={{ base: '360px', md: 'unset' }}
         >
-          <Image src={navImage} borderRadius="16px" mb="28px" alt="" />
+          {/* <Image src={navImage} borderRadius="16px" mb="28px" alt="" /> */}
           <Flex flexDirection="column">
             <Link w="100%" href="https://horizon-ui.com/pro">
               <Button w="100%" h="44px" mb="10px" variant="brand">

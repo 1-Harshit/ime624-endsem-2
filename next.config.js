@@ -11,11 +11,8 @@ const nextConfig = {
       'scontent.fotp8-1.fna.fbcdn.net',
     ],
     // Make ENV
-    unoptimized: true,
-  },
-  experimental: {
-    appDir: true,
-  },
+    // unoptimized: true,
+  }
 };
 
 // module.exports = withTM(nextConfig);

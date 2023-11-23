@@ -96,11 +96,11 @@ export default function AdminNavbar (props: {
       pt='8px'
       top={{ base: '12px', md: '16px', xl: '18px' }}
       w={{
-        base: 'calc(100vw - 6%)',
-        md: 'calc(100vw - 8%)',
-        lg: 'calc(100vw - 6%)',
-        xl: 'calc(100vw - 350px)',
-        '2xl': 'calc(100vw - 365px)'
+        base: 'calc(97vw)',
+        md: 'calc(97vw)',
+        lg: 'calc(97vw)',
+        xl: 'calc(97vw)',
+        '2xl': 'calc(97vw)'
       }}
     >
       <Flex
