@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Pin {
-  zipcode  String       @id
+  zipcode  String    @id
   district String    @db.VarChar(200)
   state    String    @db.VarChar(200)
   Address  Address[]
@@ -18,9 +18,9 @@ model Address {
   id         String      @id @default(cuid())
   line1      String
   line2      String
-  pinZipcode String
+  pinZipcode String?
   aadhar     Aadhar[]
-  Pin        Pin         @relation(fields: [pinZipcode], references: [zipcode])
+  Pin        Pin?        @relation(fields: [pinZipcode], references: [zipcode])
   Applicant  Applicant[]
 }
 
@@ -46,14 +46,13 @@ model Asset {
 }
 
 model Aadhar {
-  aadharNumber String    @id @db.VarChar(255)
-  ownerId      String    @unique
-  name         String    @db.VarChar(255)
+  aadharNumber String     @id @db.VarChar(255)
+  name         String     @db.VarChar(255)
   dob          DateTime
   sex          Gender
   addressId    String
-  permAddress  Address   @relation(fields: [addressId], references: [id])
-  owner        Applicant @relation(fields: [ownerId], references: [phoneNumber])
+  permAddress  Address    @relation(fields: [addressId], references: [id])
+  owner        Applicant?
 }
 
 model Applicant {
@@ -62,7 +61,8 @@ model Applicant {
   pan           String?           @db.VarChar(20)
   addressId     String
   maritalStatus Status
-  aadhar        Aadhar?
+  aadharNumber  String            @unique
+  aadhar        Aadhar            @relation(fields: [aadharNumber], references: [aadharNumber])
   currAddress   Address           @relation(fields: [addressId], references: [id])
   assets        Asset[]
   applications  LoanApplication[]
