@@ -6,12 +6,10 @@ import {
   useDisclosure,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Footer from 'components/footer/FooterAdmin';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import routes from 'routes';
 import {
   getActiveNavbar,
   getActiveNavbarText,
@@ -52,9 +50,9 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               <Navbar
                 onOpen={onOpen}
                 logoText={'DP Bank'}
-                brandText={getActiveRoute(routes)}
-                secondary={getActiveNavbar(routes)}
-                message={getActiveNavbarText(routes)}
+                brandText={getActiveRoute([])}
+                secondary={getActiveNavbar([])}
+                message={getActiveNavbarText([])}
                 fixed={fixed}
                 {...rest}
               />
@@ -69,9 +67,6 @@ export default function AdminLayout(props: DashboardLayoutProps) {
             pt="50px"
           >
             {children}
-          </Box>
-          <Box>
-            <Footer />
           </Box>
         </Box>
     </Box>

@@ -3,7 +3,6 @@ import {
   Flex,
   FormLabel,
   Input,
-  SpaceProps,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -16,14 +15,15 @@ export default function Default(props: {
   placeholder: string;
   type: string;
   onChange: (value: string | number) => void;
-  mb: SpaceProps['mb'];
+  disabled: boolean;
+  [x: string]: any;
 }) {
-  const { id, label, extra, placeholder, type, mb, onChange, ...rest } = props;
+  const { id, label, extra, placeholder, type, onChange, disabled, ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
 
   return (
-    <Flex direction="column" mb={mb ? mb : '30px'}>
+    <Flex direction="column" {...rest}>
       <FormLabel
         display="flex"
         ms="10px"
@@ -49,6 +49,7 @@ export default function Default(props: {
         h="44px"
         maxH="44px"
         onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
       />
     </Flex>
   );
