@@ -15,7 +15,7 @@ export default function Default(props: {
   placeholder: string;
   type: string;
   onChange: (value: string | number) => void;
-  disabled: boolean;
+  disabled?: boolean;
   value?: string | number;
   [x: string]: any;
 }) {
