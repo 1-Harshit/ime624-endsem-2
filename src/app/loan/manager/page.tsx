@@ -1,5 +1,5 @@
 'use client';
-import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
+import { Box, SimpleGrid, Text, Flex, Button, } from '@chakra-ui/react';
 import DevelopmentTable from 'views/admin/dataTables/components/DevelopmentTable';
 import tableDataDevelopment from 'views/admin/dataTables/variables/tableDataDevelopment';
 import React from 'react';
@@ -45,6 +45,16 @@ export default function DataTables() {
                 }}
               />
           </Box>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={incrementProgress}
+            isDisabled={step != 1}
+            isLoading={loading && step == 1}
+          >
+            Get OTP
+          </Button>
         </SimpleGrid>
       </Card>
       <br></br>
