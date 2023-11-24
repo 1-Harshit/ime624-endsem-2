@@ -22,7 +22,7 @@ const tableDataComplex: RowObj[] = [
 	},
 	{
 		name: 'Income',
-		feature: '10000',
+		feature: '9000',
 	},
 	{
 		name: 'Total Assets',
@@ -33,8 +33,8 @@ const tableDataComplex: RowObj[] = [
 		feature: '20000',
 	},
 	{
-		name: 'Loan Tenure',
-		feature: '12',
+		name: 'Loan EMI',
+		feature: '1500',
 	},
 	{
 		name: 'Date of Birth',

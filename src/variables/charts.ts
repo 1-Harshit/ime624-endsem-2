@@ -437,21 +437,21 @@ export const lineChartOptionsTotalSpent: ApexOptions = {
 
 // Total Spent Default
 
-export const performingBorrowerData = [
+export const performingBorrowerAssetData = [
   {
     name: "Loan to Income Percent",
     data: [
       1.2297610130324844,
-      2.696155832534296,
-      6.066012094399973,
-      14.450353198560046,
-      26.34650487843143,
+      3.696155832534296,
+      8.066012094399973,
+      13.450353198560046,
+      22.34650487843143,
       34.89169834654199,
       28.919156132193843,
-      20.540907820393274,
+      24.540907820393274,
       14.198729078037652,
-      8.26271641409587,
-      3.992630710641389,
+      12.26271641409587,
+      4.992630710641389,
       1.9051814630427323,
       0.7152406494547454,
       0.20690025632282902,
@@ -465,9 +465,37 @@ export const performingBorrowerData = [
   },
 ];
 
+export const performingBorrowerIncomeData = [
+  {
+    name: "Loan to Income Percent",
+    data: [
+      0.012486372977965645,
+      1.1450132280921554,
+      6.8729821050792154,
+      11.67859566779948,
+      15.37501320680057,
+      28.334023287558536,
+      38.93123674084526,
+      35.91564536702347,
+      24.48120787804905,
+      18.140167308031345,
+      9.042106369281933,
+      6.798630367328781,
+      3.683133300697323,
+      1.7717273489332287,
+      0.7595031582321482,
+      0.2902797383690489,
+      0.09661426682359656,
+      0.02612526402858526,
+      0.005413685403871898,
+      0.0008725646606345831
+    ],
+  },
+];
+
 // Total Spent Default
 
-export const nonPerformingBorrowerData = [
+export const nonPerformingBorrowerAssetData = [
   {
     name: "Loan to Income Percent",
     data: [
@@ -476,15 +504,15 @@ export const nonPerformingBorrowerData = [
       0.002911603495185925,
       0.025112348586923158,
       0.15523981800585026,
-      0.6596108687776957,
+      1.6596108687776957,
       1.9928041657667933,
-      4.290457593881507,
+      2.290457593881507,
       7.83765301502105,
-      12.077340927144582,
+      13.077340927144582,
       14.179676206408948,
       12.20101985594766,
       8.110393005999718,
-      4.414384780959643,
+      6.414384780959643,
       2.034917679440068,
       0.7634932523189225,
       0.23834651611825467,
@@ -495,12 +523,40 @@ export const nonPerformingBorrowerData = [
   },
 ];
 
+export const nonPerformingBorrowerIncomeData = [
+  {
+    name: "Loan to Income Percent",
+    data: [
+      0.0000028045894097079377,
+      0.00010880321655259621,
+      0.002911603495185925,
+      0.025112348586923158,
+      0.15523981800585026,
+      1.6596108687776957,
+      4.9928041657667933,
+      4.290457593881507,
+      7.83765301502105,
+      12.077340927144582,
+      14.179676206408948,
+      12.20101985594766,
+      11.110393005999718,
+      8.414384780959643,
+      7.034917679440068,
+      3.7634932523189225,
+      0.23834651611825467,
+      0.06285423021705044,
+      0.013769676678356597,
+      0.0025794410092290514
+    ],
+  },
+];
 
-export const performingBorrowerOptions: ApexOptions = {
+
+export const performingBorrowerAssetOptions: ApexOptions = {
   annotations: {
     xaxis: [
       {
-        x: 30,
+        x: 40,
         borderWidth: 3,
         borderColor: "#000",
         label: {
@@ -587,11 +643,192 @@ export const performingBorrowerOptions: ApexOptions = {
 };
 
 
-export const nonPerformingBorrowerOptions: ApexOptions = {
+export const performingBorrowerIncomeOptions: ApexOptions = {
   annotations: {
     xaxis: [
       {
-        x: 30,
+        x: 15,
+        borderWidth: 3,
+        borderColor: "#000",
+        label: {
+          borderColor: "#00E396",
+          style: {
+            color: "#000",
+            background: "#00E396"
+          },
+          text: "Current",
+        }
+      }
+    ]
+  },
+  chart: {
+    toolbar: {
+      show: false,
+    },
+    dropShadow: {
+      enabled: true,
+      top: 13,
+      left: 0,
+      blur: 10,
+      opacity: 0.1,
+      color: "#008000",
+    },
+  },
+  colors: ["#008000"],
+  markers: {
+    size: 0,
+    colors: "white",
+    strokeColors: "#7551FF",
+    strokeWidth: 3,
+    strokeOpacity: 0.9,
+    strokeDashArray: 0,
+    fillOpacity: 1,
+    discrete: [],
+    shape: "circle",
+    radius: 2,
+    offsetX: 0,
+    offsetY: 0,
+    showNullDataPoints: true,
+  },
+  tooltip: {
+    theme: "dark",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+    // type: "line",
+  },
+  xaxis: {
+    // type: "numeric",
+    categories: Array.from({ length: 21 }, (_, i) => i*5),
+    labels: {
+      style: {
+        colors: "#A3AED0",
+        fontSize: "12px",
+        fontWeight: "500",
+      },
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  legend: {
+    show: false,
+  },
+  grid: {
+    show: false,
+    column: {
+      // color: ["#7551FF", "#39B8FF"],
+      opacity: 0.5,
+    },
+  },
+  // color: ["#7551FF", "#39B8FF"],
+};
+
+
+export const nonPerformingBorrowerAssetOptions: ApexOptions = {
+  annotations: {
+    xaxis: [
+      {
+        x: 40,
+        borderWidth: 3,
+        borderColor: "#000",
+        label: {
+          borderColor: "#00E396",
+          style: {
+            color: "#000",
+            background: "#00E396"
+          },
+          text: "Current",
+        }
+      }
+    ]
+  },
+  chart: {
+    toolbar: {
+      show: false,
+    },
+    dropShadow: {
+      enabled: true,
+      top: 13,
+      left: 0,
+      blur: 10,
+      opacity: 0.1,
+      color: "#D2042D",
+    },
+  },
+  colors: ["#D2042D"],
+  markers: {
+    size: 0,
+    colors: "white",
+    strokeColors: "#7551FF",
+    strokeWidth: 3,
+    strokeOpacity: 0.9,
+    strokeDashArray: 0,
+    fillOpacity: 1,
+    discrete: [],
+    shape: "circle",
+    radius: 2,
+    offsetX: 0,
+    offsetY: 0,
+    showNullDataPoints: true,
+  },
+  tooltip: {
+    theme: "dark",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+    // type: "line",
+  },
+  xaxis: {
+    // type: "numeric",
+    categories: Array.from({ length: 21 }, (_, i) => i*5),
+    labels: {
+      style: {
+        colors: "#A3AED0",
+        fontSize: "12px",
+        fontWeight: "500",
+      },
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  legend: {
+    show: false,
+  },
+  grid: {
+    show: false,
+    column: {
+      // color: ["#7551FF", "#39B8FF"],
+      opacity: 0.5,
+    },
+  },
+  // color: ["#7551FF", "#39B8FF"],
+};
+
+export const nonPerformingBorrowerIncomeOptions: ApexOptions = {
+  annotations: {
+    xaxis: [
+      {
+        x: 15,
         borderWidth: 3,
         borderColor: "#000",
         label: {
