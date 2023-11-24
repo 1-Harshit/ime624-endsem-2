@@ -19,7 +19,7 @@ export default function DataTables() {
   const [loading, setLoading] = useState(false);
 
   const incrementProgress = () => {
-    if (appId != "tbd") {
+    if (appId != "cafecafeface") {
       alert("Please enter a valid value")
     }
     else {
@@ -27,7 +27,7 @@ export default function DataTables() {
       setTimeout(() => {
         setLoading(false);
         setHidden(0);
-      }, 3);
+      }, 3000);
     }
   };
 
@@ -90,7 +90,7 @@ export default function DataTables() {
             mt = {4}
             mx = {3}
           >
-            63
+            54
           </Text>
         </Card>
       </SimpleGrid>
