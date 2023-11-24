@@ -57,13 +57,13 @@ export default function Default() {
     ).toUpperCase(),
     maritalStatus: faker.helpers.enumValue(Status),
     addressId: '',
+    aadharNumber: '',
   });
 
   const [aadhar, setAadhar] = useState<Aadhar>({
     aadharNumber: faker.number
       .int({ min: 100000000000, max: 999999999999 })
       .toString(),
-    ownerId: '',
     name: faker.person.fullName(),
     dob: faker.date.birthdate(),
     sex: faker.person.sex().toUpperCase() as Gender,
@@ -102,6 +102,7 @@ export default function Default() {
 
   const handleSubmitForm = async () => {
     const payload = { application, aadhar, permAddress, currAddress };
+    console.log(payload);
     setLoading(true);
     await fetch('/api', {
       method: 'POST',
@@ -464,8 +465,8 @@ export default function Default() {
               window.location.reload();
             }}
             isDisabled={step != 6}
-            width="50%"
-            mx="50px"
+            width={{ base: '100%', xl: '50% - 50px' }}
+            mx={{ base: '0px', xl: '50px' }}
             isLoading={loading && step == 6}
           >
             Reset Form
@@ -476,8 +477,8 @@ export default function Default() {
             alignSelf="end" // Align the button towards the bottom
             onClick={handleSubmitForm}
             isDisabled={step != 6}
-            width="50%"
-            mx="50px"
+            width={{ base: '100%', xl: '50% - 50px' }}
+            mx={{ base: '0px', xl: '50px' }}
             isLoading={loading && step == 6}
           >
             Submit Application
