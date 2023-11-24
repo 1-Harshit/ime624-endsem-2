@@ -36,6 +36,8 @@ export default function Default() {
 
   const brandColor = useColorModeValue('brand.500', 'white');
   const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
+  const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
+  const textColorSecondary = 'gray.400';
   const cardShadow = useColorModeValue(
     '0px 18px 40px rgba(112, 144, 176, 0.12)',
     'unset',
@@ -96,6 +98,20 @@ export default function Default() {
       setProgress(step + 1);
       setLoading(false);
     }, 2000);
+  };
+
+  const handleSubmitForm = async () => {
+    const payload = { application, aadhar, permAddress, currAddress };
+    setLoading(true);
+    await fetch('/api', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    setLoading(false);
+    setProgress(0);
   };
 
   return (
@@ -380,7 +396,7 @@ export default function Default() {
               fontSize="sm"
               fontWeight="bold"
               color={useColorModeValue('gray.500', 'gray.200')}
-              mb="5px"
+              mb="10px"
             >
               Marital Status
             </Text>
@@ -400,7 +416,73 @@ export default function Default() {
               <option value="WIDOWED">Widowed</option>
             </Select>
           </Box>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={incrementProgress}
+            isDisabled={step != 5}
+            width="50%"
+            isLoading={loading && step == 5}
+          >
+            Continue
+          </Button>
         </SimpleGrid>
+      </Card>
+      <Card py="15px" mb="20px" display={step > 5 ? 'block' : 'none'}>
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: '15px', lg: '18px' }}
+          color="gray.400"
+          mb="10px"
+        >
+          Step 6: Terms and Conditions
+        </Text>
+        <Text
+          color={textColorPrimary}
+          fontWeight="bold"
+          fontSize="2xl"
+          mt="10px"
+          mb="4px"
+        >
+          Terms and Conditions
+        </Text>
+        <Text color={textColorSecondary} fontSize="md" me="26px" mb="40px">
+          As you click submit button you attest that all the information you
+          have provided is true and correct to the best of your knowledge and
+          belief. If the information is found to be incorrect, you will be
+          liable for any consequences arising out of it. You also agree to the
+          terms and conditions of the loan agreement available on the website.
+        </Text>
+        <Flex>
+          <Button
+            colorScheme="brandScheme"
+            variant="outline"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={() => {
+              window.location.reload();
+            }}
+            isDisabled={step != 6}
+            width="50%"
+            mx="50px"
+            isLoading={loading && step == 6}
+          >
+            Reset Form
+          </Button>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={handleSubmitForm}
+            isDisabled={step != 6}
+            width="50%"
+            mx="50px"
+            isLoading={loading && step == 6}
+          >
+            Submit Application
+          </Button>
+        </Flex>
       </Card>
     </Box>
   );
