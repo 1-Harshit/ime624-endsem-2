@@ -25,12 +25,14 @@ model Address {
 }
 
 model LoanApplication {
-  acNumber     String    @id @default(cuid())
+  acNumber     String     @id @default(cuid())
   applicantId  String
   principalAmt Int
   duration     Int
   purpose      String?
-  applicant    Applicant @relation(fields: [applicantId], references: [phoneNumber])
+  defaulter    Boolean    @default(false)
+  status       LoanStatus @default(PENDING)
+  applicant    Applicant  @relation(fields: [applicantId], references: [phoneNumber])
 }
 
 model Asset {
@@ -58,6 +60,7 @@ model Aadhar {
 model Applicant {
   phoneNumber   String            @id @db.VarChar(20)
   income        Int
+  assetsval     Int             @default(0)
   pan           String?           @db.VarChar(20)
   addressId     String
   maritalStatus Status
@@ -72,6 +75,7 @@ enum Type {
   LAND
   VEHICLE
   ANIMAL
+  OTHER
 }
 
 enum Gender {
@@ -84,4 +88,12 @@ enum Status {
   MARRIED
   DIVORCED
   SEPARATED
+}
+
+enum LoanStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ONGOING
+  COMPLETED
 }

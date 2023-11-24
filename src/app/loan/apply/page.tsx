@@ -15,20 +15,28 @@ import {
 // Custom components
 // import MiniCalendar from 'components/calendar/MiniCalendar';
 import MiniStatistics from 'components/card/MiniStatistics';
-import { MdFileCopy, MdLocationPin, MdMessage, MdPhone } from 'react-icons/md';
+import {
+  MdFileCopy,
+  MdLocationPin,
+  MdMessage,
+  MdMoney,
+  MdPhone,
+} from 'react-icons/md';
 import {
   Aadhar,
   Address,
   Gender,
-  type Applicant,
+  Applicant,
   Status,
+  Asset,
+  Type as AssetType,
 } from '@prisma/client';
 
 import Card from 'components/card/Card';
 import InputField from 'components/fields/InputField';
-
+import numWords from '../../../../prisma/words';
 // Assets
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Information from 'views/admin/profile/components/Information';
 import { fakerEN_IN as faker } from '@faker-js/faker';
 export default function Default() {
@@ -44,20 +52,21 @@ export default function Default() {
   );
 
   const [loading, setLoading] = useState(false);
-  const [step, setProgress] = useState(5);
+  const [step, setProgress] = useState(6);
   const maxStep = 10;
 
   const [application, setApplication] = useState<Applicant>({
     phoneNumber: faker.phone.number(),
-    income: faker.number.int({ min: 100000, max: 1000000 }),
+    income: faker.number.int({ min: 5000, max: 70000 }),
     pan: (
       faker.string.alpha(5) +
       faker.number.int({ min: 1000, max: 9999 }) +
       faker.string.alpha(1)
     ).toUpperCase(),
     maritalStatus: faker.helpers.enumValue(Status),
-    addressId: '',
-    aadharNumber: '',
+    addressId: null,
+    aadharNumber: null,
+    assetsval: 0,
   });
 
   const [aadhar, setAadhar] = useState<Aadhar>({
@@ -67,14 +76,14 @@ export default function Default() {
     name: faker.person.fullName(),
     dob: faker.date.birthdate(),
     sex: faker.person.sex().toUpperCase() as Gender,
-    addressId: '',
+    addressId: undefined,
   });
 
   const [permAddress, setPermAddress] = useState<Address>(() => {
     const location = faker.location;
     const zipCode = location.zipCode();
     return {
-      id: '',
+      id: undefined,
       line1: location.streetAddress(),
       line2: location.city() + ', ' + location.state() + ' - ' + zipCode,
       pinZipcode: zipCode,
@@ -85,12 +94,14 @@ export default function Default() {
     const location = faker.location;
     const zipCode = location.zipCode();
     return {
-      id: '',
+      id: undefined,
       line1: location.streetAddress(),
       line2: location.city() + ', ' + location.state() + ' - ' + zipCode,
       pinZipcode: zipCode,
     };
   });
+
+  const [assets, setAssets] = useState<Asset[]>([]);
 
   const incrementProgress = () => {
     setLoading(true);
@@ -114,6 +125,15 @@ export default function Default() {
     setLoading(false);
     setProgress(0);
   };
+
+  const udpatethings = () => {
+    const assetsval = assets
+      .map((asset) => asset.valuation)
+      .reduce((a, b) => a + b, 0);
+    setApplication({ ...application, assetsval });
+  };
+
+  useEffect(udpatethings, [application, assets]);
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
@@ -403,6 +423,7 @@ export default function Default() {
             </Text>
             <Select
               placeholder="Select option"
+              disabled={step != 5}
               onChange={(e) => {
                 setApplication({
                   ...application,
@@ -411,10 +432,10 @@ export default function Default() {
               }}
               value={application.maritalStatus}
             >
+              <option value="SINGLE">Single</option>
               <option value="MARRIED">Married</option>
-              <option value="UNMARRIED">Unmarried</option>
               <option value="DIVORCED">Divorced</option>
-              <option value="WIDOWED">Widowed</option>
+              <option value="SEPARATED">Seperated</option>
             </Select>
           </Box>
           <Button
@@ -425,6 +446,215 @@ export default function Default() {
             isDisabled={step != 5}
             width="50%"
             isLoading={loading && step == 5}
+          >
+            Continue
+          </Button>
+        </SimpleGrid>
+      </Card>
+      <Card py="15px" mb="20px" display={step > 5 ? 'block' : 'none'}>
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: '15px', lg: '18px' }}
+          color="gray.400"
+          mb="10px"
+        >
+          Step 6: Income and Assets Details
+        </Text>
+        <SimpleGrid
+          columns={{ base: 1, md: 1, xl: 3 }}
+          templateColumns={{
+            md: '100%',
+            xl: '25% 25% 40%',
+          }}
+          gap="20px"
+          mb="20px"
+        >
+          <InputField
+            id="income"
+            label="Income per month"
+            extra={<Icon as={MdMoney} />}
+            placeholder="Income"
+            type="number"
+            onChange={(value) => {
+              setApplication({ ...application, income: Number(value) });
+            }}
+            disabled={step != 6}
+            value={application.income}
+          />
+          <InputField
+            id="income-proof"
+            label="Proof of income"
+            extra={<>Add link</>}
+            placeholder="Link to proof"
+            type="string"
+            disabled={step != 6}
+            onChange={(value) => {}}
+          />
+          <Text
+            color={textColorPrimary}
+            fontWeight="bold"
+            fontSize="md"
+            mt="10px"
+            mb="4px"
+            alignSelf="end" // Align the button towards the bottom
+          >
+            Deaclared Monthly income is {numWords(application.income)}
+          </Text>
+        </SimpleGrid>
+        {assets.map((asset, index) => (
+          <Box key={index}>
+            <SimpleGrid
+              columns={{ base: 1, md: 1, xl: 5 }}
+              gap="20px"
+              mb="20px"
+            >
+              <Box>
+                <Text
+                  fontSize="sm"
+                  fontWeight="bold"
+                  color={textColorSecondary}
+                  mb="10px"
+                >
+                  Asset Type
+                </Text>
+                <Select
+                  id={'asset-type' + index}
+                  placeholder="Select option"
+                  disabled={step != 6}
+                  onChange={(e) => {
+                    setAssets((assets) => {
+                      console.log(e.target.value);
+                      assets[index].assetType = e.target.value as AssetType;
+                      console.log(assets);
+                      return assets;
+                    });
+                  }}
+                  value={assets[index].assetType}
+                >
+                  <option value="LAND">Land</option>
+                  <option value="ANIMAL">Animal</option>
+                  <option value="VEHICLE">Vehicle</option>
+                  <option value="OTHER">Other</option>
+                </Select>
+              </Box>
+              <InputField
+                id={'asset-quantifier' + index}
+                label="Asset Quantifier"
+                extra={<small>Acres of land or number of asset</small>}
+                placeholder="Quantifier"
+                type="number"
+                disabled={step != 6}
+                value={asset.assetQuantifier}
+                onChange={(value) => {
+                  setAssets((assets) => {
+                    assets[index].assetQuantifier = Number(value);
+                    return assets;
+                  });
+                }}
+              />
+              <InputField
+                id={'asset-description' + index}
+                label="Asset Description"
+                extra={<small>Describe the asset</small>}
+                placeholder="Description"
+                type="string"
+                disabled={step != 6}
+                value={asset.description}
+                onChange={(value) => {
+                  setAssets((assets) => {
+                    assets[index].description = String(value);
+                    return assets;
+                  });
+                }}
+              />
+              <InputField
+                id={'asset-valuation' + index}
+                label="Asset Valuation"
+                extra={<small>Valuation of asset</small>}
+                placeholder="Valuation"
+                type="number"
+                disabled={step != 6}
+                value={asset.valuation}
+                onChange={(value) => {
+                  setAssets((assets) => {
+                    assets[index].valuation = Number(value);
+                    return assets;
+                  });
+                }}
+              />
+              <InputField
+                id={'asset-proof' + index}
+                label="Proof of asset"
+                extra={<>Add link</>}
+                placeholder="Link to proof"
+                type="string"
+                disabled={step != 6}
+                value={asset.proof}
+                onChange={(value) => {
+                  setAssets((assets) => {
+                    assets[index].proof = String(value);
+                    return assets;
+                  });
+                }}
+              />
+            </SimpleGrid>
+          </Box>
+        ))}
+
+        <SimpleGrid
+          columns={{ base: 1, md: 1, xl: 3 }}
+          templateColumns={{
+            md: '100%',
+            xl: '50% 25% 25%',
+          }}
+          gap="20px"
+          mb="20px"
+        >
+          <Text
+            color={textColorPrimary}
+            fontWeight="bold"
+            fontSize="md"
+            mt="10px"
+            mb="4px"
+            alignSelf="end" // Align the button towards the bottom
+          >
+            Total value of declared assets is {numWords(application.assetsval)}
+          </Text>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={() => {
+              setAssets((assets) => [
+                ...assets,
+                {
+                  assetId: undefined,
+                  ownerId: null,
+                  assetType: faker.helpers.enumValue(AssetType),
+                  assetQuantifier: faker.number.int(5),
+                  description: 'Some Description',
+                  valuation: faker.number.int({ min: 10000, max: 100000 }),
+                  proof: 'DRIVE LINK',
+                  verified: true,
+                },
+              ]);
+              setTimeout(udpatethings, 1000);
+            }}
+            isDisabled={step != 6}
+            width="50%"
+            isLoading={loading && step == 6}
+          >
+            Add Another Asset
+          </Button>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={incrementProgress}
+            isDisabled={step != 6}
+            width="50%"
+            isLoading={loading && step == 6}
           >
             Continue
           </Button>
