@@ -16,9 +16,7 @@ import * as React from 'react';
 
 type RowObj = {
 	name: string;
-	tech: any;
-	date: string;
-	progress: number;
+	feature: string;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
@@ -51,40 +49,40 @@ export default function ComplexTable(props: { tableData: any }) {
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('tech', {
-			id: 'tech',
+		// columnHelper.accessor('tech', {
+		// 	id: 'tech',
+		// 	header: () => (
+		// 		<Text
+		// 			justifyContent='space-between'
+		// 			align='center'
+		// 			fontSize={{ sm: '10px', lg: '12px' }}
+		// 			color='gray.400'>
+		// 			STATUS
+		// 		</Text>
+		// 	),
+		// 	cell: (info) => (
+		// 		<Flex align='center'>
+		// 			{info.getValue().map((item: string, key: number) => {
+		// 				if (item === 'apple') {
+		// 					return <AppleLogo key={key} color={iconColor} me='16px' h='18px' w='15px' />;
+		// 				} else if (item === 'android') {
+		// 					return <AndroidLogo key={key} color={iconColor} me='16px' h='18px' w='16px' />;
+		// 				} else if (item === 'windows') {
+		// 					return <WindowsLogo key={key} color={iconColor} h='18px' w='19px' />;
+		// 				}
+		// 			})}
+		// 		</Flex>
+		// 	)
+		// }),
+		columnHelper.accessor('feature', {
+			id: 'feature',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					STATUS
-				</Text>
-			),
-			cell: (info) => (
-				<Flex align='center'>
-					{info.getValue().map((item: string, key: number) => {
-						if (item === 'apple') {
-							return <AppleLogo key={key} color={iconColor} me='16px' h='18px' w='15px' />;
-						} else if (item === 'android') {
-							return <AndroidLogo key={key} color={iconColor} me='16px' h='18px' w='16px' />;
-						} else if (item === 'windows') {
-							return <WindowsLogo key={key} color={iconColor} h='18px' w='19px' />;
-						}
-					})}
-				</Flex>
-			)
-		}),
-		columnHelper.accessor('date', {
-			id: 'date',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					DATE
+					FEATURE
 				</Text>
 			),
 			cell: (info) => (
@@ -93,26 +91,26 @@ export default function ComplexTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-		columnHelper.accessor('progress', {
-			id: 'progress',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					PROGRESS
-				</Text>
-			),
-			cell: (info) => (
-				<Flex align='center'>
-					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue()}%
-					</Text>
-					<Progress variant='table' colorScheme='brandScheme' h='8px' w='63px' value={info.getValue()} />
-				</Flex>
-			)
-		})
+		// columnHelper.accessor('progress', {
+		// 	id: 'progress',
+		// 	header: () => (
+		// 		<Text
+		// 			justifyContent='space-between'
+		// 			align='center'
+		// 			fontSize={{ sm: '10px', lg: '12px' }}
+		// 			color='gray.400'>
+		// 			PROGRESS
+		// 		</Text>
+		// 	),
+		// 	cell: (info) => (
+		// 		<Flex align='center'>
+		// 			<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
+		// 				{info.getValue()}%
+		// 			</Text>
+		// 			<Progress variant='table' colorScheme='brandScheme' h='8px' w='63px' value={info.getValue()} />
+		// 		</Flex>
+		// 	)
+		// })
 	];
 	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
 	const table = useReactTable({
@@ -130,13 +128,13 @@ export default function ComplexTable(props: { tableData: any }) {
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
 			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
 				<Text color={textColor} fontSize='22px' fontWeight='700' lineHeight='100%'>
-					Complex Table
+					Application Information
 				</Text>
 				<Menu />
 			</Flex>
 			<Box>
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
-					<Thead>
+					{/* <Thead>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<Tr key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
@@ -147,7 +145,7 @@ export default function ComplexTable(props: { tableData: any }) {
 											pe='10px'
 											borderColor={borderColor}
 											cursor='pointer'
-											onClick={header.column.getToggleSortingHandler()}>
+											onClick={() => void 0}>
 											<Flex
 												justifyContent='space-between'
 												align='center'
@@ -163,7 +161,7 @@ export default function ComplexTable(props: { tableData: any }) {
 								})}
 							</Tr>
 						))}
-					</Thead>
+					</Thead> */}
 					<Tbody>
 						{table.getRowModel().rows.slice(0, 11).map((row) => {
 							return (

@@ -1,76 +1,52 @@
 type RowObj = {
 	name: string;
-	tech: string[];
-	date: string;
-	progress: number;
+	feature: string;
 };
 
 const tableDataComplex: RowObj[] = [
 	{
-		name: 'Marketplace',
-		tech: [ 'apple', 'android', 'windows' ],
-		date: '12.Jan.2021',
-		progress: 75.5
+		name: 'Application ID',
+		feature: '159244852145',
 	},
 	{
-		name: 'Venus DB PRO',
-		tech: [ 'apple' ],
-		date: '21.Feb.2021',
-		progress: 35.4
+		name: 'Name',
+		feature: 'Parinay Chauhan',
 	},
 	{
-		name: 'Venus DS',
-		tech: [ 'apple', 'windows' ],
-		date: '13.Mar.2021',
-		progress: 25
+		name: 'AADHAR Number',
+		feature: '1256896574532598',
 	},
 	{
-		name: 'Venus 3D Asset',
-		tech: [ 'apple', 'android', 'windows' ],
-		date: '24.Jan.2021',
-		progress: 100
+		name: 'PAN Number',
+		feature: 'CNUCJ6759Q',
 	},
 	{
-		name: 'Marketplace',
-		tech: [ 'apple', 'windows' ],
-		date: 'Oct 24, 2022',
-		progress: 75.5
+		name: 'Income',
+		feature: '10000',
 	},
 	{
-		name: 'Marketplace',
-		tech: [ 'apple', 'android', 'windows' ],
-		date: 'Oct 24, 2022',
-		progress: 75.5
+		name: 'Total Assets',
+		feature: '50000',
 	},
 	{
-		name: 'Marketplace',
-		tech: [ 'apple', 'android', 'windows' ],
-		date: '12.Jan.2021',
-		progress: 75.5
+		name: 'Loan Amount',
+		feature: '20000',
 	},
 	{
-		name: 'Venus DB PRO',
-		tech: [ 'apple' ],
-		date: '21.Feb.2021',
-		progress: 35.4
+		name: 'Loan Tenure',
+		feature: '12',
 	},
 	{
-		name: 'Venus DS',
-		tech: [ 'apple', 'windows' ],
-		date: '13.Mar.2021',
-		progress: 25
+		name: 'Date of Birth',
+		feature: 'Aug 25, 2003',
 	},
 	{
-		name: 'Venus 3D Asset',
-		tech: [ 'apple', 'android', 'windows' ],
-		date: '24.Jan.2021',
-		progress: 100
+		name: 'Sex',
+		feature: 'Male',
 	},
 	{
-		name: 'Marketplace',
-		tech: [ 'apple', 'windows' ],
-		date: 'Oct 24, 2022',
-		progress: 75.5
-	}
+		name: 'Marital Status',
+		feature: 'Single',
+	},
 ];
 export default tableDataComplex;
