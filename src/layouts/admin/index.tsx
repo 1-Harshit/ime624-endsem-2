@@ -1,12 +1,9 @@
 // Chakra imports
 import { Portal, Box, useDisclosure } from '@chakra-ui/react'
-import Footer from 'components/footer/FooterAdmin'
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin'
-import Sidebar from 'components/sidebar/Sidebar'
 import { SidebarContext } from 'contexts/SidebarContext'
 import { PropsWithChildren, useEffect, useState } from 'react'
-import routes from 'routes'
 import {
   getActiveNavbar,
   getActiveNavbarText,
@@ -39,7 +36,6 @@ export default function AdminLayout (props: DashboardLayoutProps) {
           setToggleSidebar
         }}
       >
-        <Sidebar routes={routes} display='none' {...rest} />
         <Box
           float='right'
           minHeight='100vh'
@@ -59,9 +55,9 @@ export default function AdminLayout (props: DashboardLayoutProps) {
               <Navbar
                 onOpen={onOpen}
                 logoText={'Horizon UI Dashboard PRO'}
-                brandText={getActiveRoute(routes)}
-                secondary={getActiveNavbar(routes)}
-                message={getActiveNavbarText(routes)}
+                brandText={getActiveRoute([])}
+                secondary={getActiveNavbar([])}
+                message={getActiveNavbarText([])}
                 fixed={fixed}
                 {...rest}
               />
@@ -78,7 +74,6 @@ export default function AdminLayout (props: DashboardLayoutProps) {
             {children}
           </Box>
           <Box>
-            <Footer />
           </Box>
         </Box>
       </SidebarContext.Provider>

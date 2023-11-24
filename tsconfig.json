@@ -30,6 +30,7 @@
     "downlevelIteration": true,
     "baseUrl": "src",
     "paths": {
+      "react": [ "./node_modules/@types/react" ],
       "@assets/*": [
         "./src/assetsassets/*"
       ]

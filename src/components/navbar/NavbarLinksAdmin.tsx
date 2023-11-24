@@ -24,8 +24,7 @@ import navImage from '/public/img/layout/Navbar.png';
 import { FaEthereum } from 'react-icons/fa';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { MdInfoOutline, MdNotificationsNone } from 'react-icons/md';
-import routes from 'routes';
-export default function HeaderLinks(props: { secondary: boolean }) {
+export default function HeaderLinks(props: { secondary: boolean } & any) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   // Chakra Color Mode

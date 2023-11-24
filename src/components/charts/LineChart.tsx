@@ -1,7 +1,7 @@
 import dynamic from 'next/dist/shared/lib/dynamic'
 import { ChartProps } from './LineAreaChart'
 
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false }) as any
 
 interface LineChartProps extends ChartProps {}
 

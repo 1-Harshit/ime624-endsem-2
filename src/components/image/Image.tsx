@@ -3,7 +3,11 @@ import * as React from 'react'
 import NextImage from 'next/image'
 import { ComponentProps } from 'react'
 
-interface ImageProps extends ComponentProps<ChakraComponent<'div', {}>> {}
+type ImageProps = ComponentProps<typeof Box> & {
+  src?: string
+  alt?: string
+  w?: string
+}
 
 export const Image = (props: ImageProps) => {
   const { src, alt, ...rest } = props
