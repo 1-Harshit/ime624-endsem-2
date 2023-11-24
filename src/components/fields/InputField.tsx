@@ -16,9 +16,10 @@ export default function Default(props: {
   type: string;
   onChange: (value: string | number) => void;
   disabled: boolean;
+  value?: string | number;
   [x: string]: any;
 }) {
-  const { id, label, extra, placeholder, type, onChange, disabled, ...rest } = props;
+  const { id, label, extra, placeholder, type, onChange, disabled, value, ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
 
@@ -50,6 +51,7 @@ export default function Default(props: {
         maxH="44px"
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
+        value={value}
       />
     </Flex>
   );

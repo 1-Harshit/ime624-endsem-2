@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Pin {
-  zipcode  Int       @id
+  zipcode  String       @id
   district String    @db.VarChar(200)
   state    String    @db.VarChar(200)
   Address  Address[]
@@ -18,7 +18,7 @@ model Address {
   id         String      @id @default(cuid())
   line1      String
   line2      String
-  pinZipcode Int
+  pinZipcode String
   aadhar     Aadhar[]
   Pin        Pin         @relation(fields: [pinZipcode], references: [zipcode])
   Applicant  Applicant[]
