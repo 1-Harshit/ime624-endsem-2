@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Aadhar, Address, Applicant } from '@prisma/client';
+import {
+  Aadhar,
+  Address,
+  Applicant,
+  Asset,
+  LoanApplication,
+} from '@prisma/client';
 
 import prisma from '../../../prisma/prisma';
 
@@ -15,15 +21,25 @@ export async function POST(request: NextRequest) {
   let applicant: Applicant,
     aadhar: Aadhar,
     permAddress: Address,
-    currAddress: Address;
+    currAddress: Address,
+    assets: Asset[],
+    loanApplication: LoanApplication;
   try {
     const body = await request.json();
-    console.log(body);
     applicant = body.application as Applicant;
     aadhar = body.aadhar as Aadhar;
     permAddress = body.permAddress as Address;
     currAddress = body.currAddress as Address;
-    console.log(applicant, aadhar, permAddress, currAddress);
+    assets = body.assets as Asset[];
+    loanApplication = body.loanapp as LoanApplication;
+    console.log(
+      applicant,
+      aadhar,
+      permAddress,
+      currAddress,
+      assets,
+      loanApplication,
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: 'Invalid Request' }, { status: 400 });
@@ -62,12 +78,37 @@ export async function POST(request: NextRequest) {
     });
 
     // CREATE ASSETS
+    await prisma.asset.createMany({
+      data: assets.map((asset) => ({
+        ...asset,
+        assetId: undefined,
+        ownerId: applicant.phoneNumber,
+      })),
+    });
 
     // CREATE LOAN APPLICATION
+    loanApplication = await prisma.loanApplication.create({
+      data: {
+        ...loanApplication,
+        acNumber: undefined,
+        applicantId: applicant.phoneNumber,
+      },
+    });
+    console.log(
+      loanApplication,
+      assets,
+      applicant,
+      aadhar,
+      currAddress,
+      permAddress,
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: 'Server Error' }, { status: 500 });
   }
 
-  return NextResponse.json({ message: 'Hello World' }, { status: 200 });
+  return NextResponse.json(
+    { message: 'Donezy', appId: loanApplication.acNumber },
+    { status: 200 },
+  );
 }

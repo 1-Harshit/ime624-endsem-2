@@ -30,6 +30,7 @@ import {
   Status,
   Asset,
   Type as AssetType,
+  LoanApplication,
 } from '@prisma/client';
 
 import Card from 'components/card/Card';
@@ -52,8 +53,8 @@ export default function Default() {
   );
 
   const [loading, setLoading] = useState(false);
-  const [step, setProgress] = useState(6);
-  const maxStep = 10;
+  const [step, setProgress] = useState(1);
+  const maxStep = 8;
 
   const [application, setApplication] = useState<Applicant>({
     phoneNumber: faker.phone.number(),
@@ -103,6 +104,18 @@ export default function Default() {
 
   const [assets, setAssets] = useState<Asset[]>([]);
 
+  const [loanapp, setLoanapp] = useState<LoanApplication>({
+    acNumber: undefined,
+    applicantId: null,
+    principalAmt: faker.number.int({ min: 10000, max: 100000 }),
+    duration: faker.number.int({ min: 6, max: 24 }),
+    purpose: faker.lorem.sentence(10),
+    status: 'PENDING',
+    defaulter: false,
+  });
+
+  const [finalid, setFinalid] = useState<string>('');
+
   const incrementProgress = () => {
     setLoading(true);
     setTimeout(() => {
@@ -112,7 +125,15 @@ export default function Default() {
   };
 
   const handleSubmitForm = async () => {
-    const payload = { application, aadhar, permAddress, currAddress };
+    udpatethings();
+    const payload = {
+      application,
+      aadhar,
+      permAddress,
+      currAddress,
+      assets,
+      loanapp,
+    };
     console.log(payload);
     setLoading(true);
     await fetch('/api', {
@@ -120,10 +141,17 @@ export default function Default() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    setLoading(false);
-    setProgress(0);
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        setProgress(0);
+        res.json().then((v) => {
+          setFinalid(v.appId);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const udpatethings = () => {
@@ -137,7 +165,7 @@ export default function Default() {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Box textAlign="center" mb="20px">
+      <Box textAlign="center" mb="20px" display={step == 0 ? 'none' : 'block'}>
         <Flex alignItems="center" mb="20px">
           <Text fontSize="2xl" fontWeight="bold">
             Progress
@@ -153,7 +181,7 @@ export default function Default() {
           />
         </Flex>
       </Box>
-      <Box display={step > 4 ? 'block' : 'none'}>
+      <Box display={step > 4 || step == 0 ? 'block' : 'none'}>
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3, '2xl': 4 }}
           gap="20px"
@@ -177,7 +205,28 @@ export default function Default() {
           />
         </SimpleGrid>
       </Box>
-
+      <Card py="15px" mb="20px" display={step == 0 ? 'block' : 'none'}>
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: '15px', lg: '18px' }}
+          color="gray.400"
+          mb="10px"
+        >
+          All Steps completed!
+        </Text>
+        <Text
+          color={textColorPrimary}
+          fontWeight="bold"
+          fontSize="2xl"
+          mt="10px"
+          mb="4px"
+        >
+          You have sucessfully submitted your application with reference number{' '}
+          {finalid}. You will be hearing from us soon. Keep the reference number
+          handy for future correspondence.
+        </Text>
+      </Card>
       <Card py="15px" mb="20px" display={step > 0 ? 'block' : 'none'}>
         <Text
           justifyContent="space-between"
@@ -422,6 +471,7 @@ export default function Default() {
               Marital Status
             </Text>
             <Select
+              id="lollllll"
               placeholder="Select option"
               disabled={step != 5}
               onChange={(e) => {
@@ -633,9 +683,9 @@ export default function Default() {
                   ownerId: null,
                   assetType: faker.helpers.enumValue(AssetType),
                   assetQuantifier: faker.number.int(5),
-                  description: 'Some Description',
+                  description: faker.lorem.sentence(5),
                   valuation: faker.number.int({ min: 10000, max: 100000 }),
-                  proof: 'DRIVE LINK',
+                  proof: faker.internet.url(),
                   verified: true,
                 },
               ]);
@@ -660,7 +710,7 @@ export default function Default() {
           </Button>
         </SimpleGrid>
       </Card>
-      <Card py="15px" mb="20px" display={step > 5 ? 'block' : 'none'}>
+      <Card py="15px" mb="20px" display={step > 6 ? 'block' : 'none'}>
         <Text
           justifyContent="space-between"
           align="center"
@@ -668,7 +718,100 @@ export default function Default() {
           color="gray.400"
           mb="10px"
         >
-          Step 6: Terms and Conditions
+          Step 7: Loan Details
+        </Text>
+        <SimpleGrid
+          columns={{ base: 1, md: 1, xl: 3 }}
+          templateColumns={{
+            md: '100%',
+            xl: '25% 25% 40%',
+          }}
+          gap="20px"
+          mb="20px"
+        >
+          <InputField
+            id="principal"
+            label="Principal Amount"
+            extra={<Icon as={MdMoney} />}
+            placeholder="Principal Amount"
+            type="number"
+            onChange={(value) => {
+              setLoanapp({ ...loanapp, principalAmt: Number(value) });
+            }}
+            disabled={step != 7}
+            value={loanapp.principalAmt}
+          />
+          <InputField
+            id="duration"
+            label="Duration"
+            extra={<small>Duration in months</small>}
+            placeholder="Duration"
+            type="number"
+            onChange={(value) => {
+              setLoanapp({ ...loanapp, duration: Number(value) });
+            }}
+            disabled={step != 7}
+            value={loanapp.duration}
+          />
+          <InputField
+            id="purpose"
+            label="Purpose"
+            extra={<small>Purpose of loan</small>}
+            placeholder="Purpose"
+            type="string"
+            onChange={(value) => {
+              setLoanapp({ ...loanapp, purpose: String(value) });
+            }}
+            disabled={step != 7}
+            value={loanapp.purpose}
+          />
+        </SimpleGrid>
+        <SimpleGrid
+          columns={{ base: 1, md: 1, xl: 2 }}
+          templateColumns={{
+            md: '100%',
+            xl: '75% 15%',
+          }}
+          gap="20px"
+          mb="20px"
+        >
+          <Text
+            color={textColorPrimary}
+            fontWeight="bold"
+            fontSize="md"
+            mt="10px"
+            mb="4px"
+            alignSelf="end" // Align the button towards the bottom
+          >
+            Loan application is for {numWords(loanapp.principalAmt)}. <br />
+            EMI would roughly be{' '}
+            {numWords(
+              Math.round((loanapp.principalAmt * 1.11) / loanapp.duration),
+            )}{' '}
+            per month for {loanapp.duration} months.
+          </Text>
+          <Button
+            colorScheme="brandScheme"
+            variant="solid"
+            alignSelf="end" // Align the button towards the bottom
+            onClick={incrementProgress}
+            isDisabled={step != 7}
+            width="100%"
+            isLoading={loading && step == 7}
+          >
+            Continue
+          </Button>
+        </SimpleGrid>
+      </Card>
+      <Card py="15px" mb="20px" display={step > 7 ? 'block' : 'none'}>
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: '15px', lg: '18px' }}
+          color="gray.400"
+          mb="10px"
+        >
+          Step 8: Terms and Conditions
         </Text>
         <Text
           color={textColorPrimary}
@@ -694,10 +837,10 @@ export default function Default() {
             onClick={() => {
               window.location.reload();
             }}
-            isDisabled={step != 6}
+            isDisabled={step != 8}
             width={{ base: '100%', xl: '50% - 50px' }}
             mx={{ base: '0px', xl: '50px' }}
-            isLoading={loading && step == 6}
+            isLoading={loading && step == 8}
           >
             Reset Form
           </Button>
@@ -706,10 +849,10 @@ export default function Default() {
             variant="solid"
             alignSelf="end" // Align the button towards the bottom
             onClick={handleSubmitForm}
-            isDisabled={step != 6}
+            isDisabled={step != 8}
             width={{ base: '100%', xl: '50% - 50px' }}
             mx={{ base: '0px', xl: '50px' }}
-            isLoading={loading && step == 6}
+            isLoading={loading && step == 8}
           >
             Submit Application
           </Button>
